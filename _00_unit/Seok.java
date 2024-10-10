@@ -1,4 +1,4 @@
-package unit;
+package _00_unit;
 // extends StarUnit으로 상속받음
 public class Seok extends StarUnit{
 

@@ -1,5 +1,5 @@
 // super class
-package unit;
+package _00_unit;
 
 public class StarUnit {
 	public int hp = 100;

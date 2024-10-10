@@ -1,10 +1,10 @@
-package playMap;
+package _00_playMap;
 
 import java.util.ArrayList;
 
-import unit.Seok;
-import unit.StarUnit;
-import unit.ZZan;
+import _00_unit.Seok;
+import _00_unit.StarUnit;
+import _00_unit.ZZan;
 
 public class GamePlay {
 
@@ -22,6 +22,7 @@ public class GamePlay {
 		// ArrayList<ZZan> zzanList = new ArrayList<>();
 		StarUnit s1 = new Seok();
 		// 다형성(객체지향 언어 특징) : 부모로부터 접근. 부모에게 정의된 멤머변수와 메서드를 부모로부터 접근
+		// 슈퍼클래스의 참조변수, 자식클래스의 객체를 참조할 수 있다. 부모를 가지고 자식을 객체를 만들면 자식에 관심이 있는 것(is a관계)
 		// s1은 StarUnit의 주소 
 		// s1.unitName은 부모로부터(부모의 주소로) unitName에 접근
 //		Seok t1 = new Seok();
