@@ -13,6 +13,7 @@ public class Game {
 
 		SuperUnit t1 = new Tiger();
 		t1.name = "호돌이";
+//		슈퍼클래스 참조변수는 서브클래스의 주소값을 가진다.
 		t1.age = 1;
 		t1.kg = 40;
 		zlist.add(t1);
