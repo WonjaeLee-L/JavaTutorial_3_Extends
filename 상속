@@ -15,21 +15,21 @@
  >> 공통된 정보(멤버변수, conn() 등)을 별도로 만들어서 DAO가 상속받아서 사용하게하면 Super Class만 수정하면 된다.
 	>> 유지보수가 좋다. 코드의 중복이 적다. 통일성(메서드명과 변수명)이 있다.
 
-  Super Class(부모 클래스)			Sub Class(자식 클래스)
-     super.				   this.
--------DB_info Class----------        상속받음
-l    멤버변수		l        <------	IdeaDAO<ideabank Table>
-l    public boolean conn(){}  l        <------  	MemberDAO<member Table>
-l    public void init(){}	l        <------	EventDAO<event Table>
+  Super Class(부모 클래스)			               Sub Class(자식 클래스)
+     super.				                           this.
+-------DB_info Class-----------        상속받음
+ㅣ    멤버변수                   ㅣ        <------	IdeaDAO<ideabank Table>
+ㅣ    public boolean conn(){}  ㅣ        <------ MemberDAO<member Table>
+ㅣ    public void init(){}	  ㅣ        <------	EventDAO<event Table>
 -------------------------------
 
 
-------------Sub Class------------  
-l	--Super class--	    l
-l	l	      l         l
-l	l                 l         l   	----> super class를 확장
-l	l---------------l         l
------------------------------------
+---------------Sub Class------------  
+ㅣ	 ---Super class---             ㅣ
+ㅣ	ㅣ              ㅣ              ㅣ
+ㅣ	ㅣ              ㅣ              ㅣ   	----> super class를 확장
+ㅣ	ㅣ--------------ㅣ              ㅣ
+------------------------------------
 
 * 부모가 유전자, 습관, 행동을 자식에게 물려주듯, 멤버변수와 메서드를 물려주는 것. 유지보수가 좋고 코드의 중복이 적고 통일성이 있다.
 받은 유전자, 습관, 행동은 같지만 자식마다 다른 특성을 가지 듯 Sub Class마다 다른 부분 존재한다.
@@ -88,8 +88,65 @@ l	l---------------l         l
   
   
   
-  (SuperClass)JFrame(자바 awt,swing_package제공)
-  ----extends(상속)----> 
-  (SubClass)MainFrame[ActionListner(이벤트 동작 처리기능 제공)인터페이스를(_Java제공)implements(구현)]
   
+ **
+  (Super Class)JFrame(자바 awt,swing_package제공)
+  >>>>extends(상속)>>>> 
+  (Sub Class)MainFrame[ActionListener(이벤트 동작 처리기능 제공)인터페이스를(_Java제공)implements(구현)]
+  
+  JFrame으로 MainFrame만들었다 (is a 관계)
+  MainFrame에 어떤 기능을 제공하기 위해서 인터페이스(ActionListener)를 제공받았다.
+  
+  SuperUnit(SuperClass)
+  >>>>>(Super Class를 가지고 tiger를 만들었다 : is a 관계)extends>>>>>
+  tiger(Sub Class)
+  
+  tiger에 CRUD(DB등록 위해 코드 등등)를 만들면 기능구현에는 문제가 없지만 유지보수, 수정 등에 단점이 있다
+  >> CRUD기능만 별도로 정의한다. 응집도를 낮추기 위한 전략(소스 수정을 적게, 기능 수행을 위해 최소한의 소스만 수정하도록 함)
+  >> 별도로 따로 만들어서 그 객체를 참조한다. 클래스로 정의는 것 보다도, interface로 기능을 별도로 정의하여
+  >> interface를 사용하면 된다. DAO가 interface를 구현받는다. interface에는 CRUD는 정의만 하고 코드 x 
+  >> tiger는 구현받은거에 따라서 객체가 다르게 정의된다. 
+  >> 의존도를 낮추기 위해 interface 사용 >> 외부 소스가 수정될 때, tiger가 최소한으로 수정되게 하는 것.
+  >> DTO가 수정될 때, DAO가 최소한으로 수정 되는 것이 중요
+  
+  
+  SuperUnit(Super Class)
+  ---------------------
+  ㅣ   String name     ㅣ
+  ㅣ          eat()    ㅣ
+  ---------------------
+  
+  >> extends >>
+  
+  tiger(Sub Class)
+  --------------------------------
+  ㅣ <2.>                         ㅣ
+  ㅣ MemberDAO m = new OMember(); ㅣ
+  ㅣ 인터페이스의 변수ㅣ구현받은(사용할)객체ㅣ
+  ㅣ   (다형성으로 만든 코드)          ㅣ
+  ㅣ   m.add() 호출 가능            ㅣ
+  ㅣ   m.del() 호출 가능            ㅣ
+  --------------------------------
+  
+  
+  interface 정의(기능만 정의한 것. MemberDAO에는 add, del이라는 기능만 있다.)
+  public interface MemberDAO(){
+  	public void add(); // 인터페이스는 추상메서드만 가질 수 있다.
+  	public void del();
+  }
+  
+  						<1.>
+  >>>>>implements>>>>>   OMember in MemberDAO(interface를 얘가 구현받음. 구현받은, 실제 동작하는 객체를 설계)
+  					    ㅣ					ㅣ
+  						ㅣ ~override			ㅣ
+  						ㅣ add(){}			ㅣ
+  						ㅣ					ㅣ
+  						ㅣ ~override			ㅣ
+  						ㅣ del(){}			ㅣ
+  						---------------------
+  MMember를 mysql로 만들고 위에 tiger class의 객체만 new OMember >> new MMemeber로 수정, 나머지는 그대로 둬도, 오라클 >> mysql로 사용 가능
+  
+  <1.> interface를 가지고 객체를 만드는 것이 JFrame을 이용하여 override 했던 것.
+  <2.> interface와 만든 객체를 가지고 다형성을 이용하여 코드를 짜는 것.
+  		>> <1.>과 <2.>의 개념 구분
   
